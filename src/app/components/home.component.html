@@ -1,0 +1,113 @@
+<div class="home-page">
+  <!-- Hero Section -->
+<section class="hero">
+  <div class="hero-content">
+    <h1 class="hero-title">Start your journey with us.</h1>
+    <p class="hero-subtitle">50% off regular seat prices</p>
+    <a routerLink="/flights" class="btn btn-primary btn-large">
+      BOOK THE FLIGHT
+    </a>
+  </div>
+</section>
+
+
+  <!-- Destinations Section -->
+  <section class="destinations-section section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Top Destinations</h2>
+        <p>Explore our most popular travel destinations</p>
+      </div>
+
+      <div class="destinations-grid">
+        <div class="destination-card" *ngFor="let destination of destinations">
+          <div class="destination-image">
+            <img [src]="destination.image" [alt]="destination.name">
+          </div>
+          <div class="destination-content">
+            <h3>{{destination.name}}</h3>
+            <p>{{destination.description}}</p>
+            <div class="destination-stats">
+              <span class="stat">✈️ {{destination.flights}}+ flights</span>
+              <span class="stat">🏨 {{destination.hotels}}+ hotels</span>
+            </div>
+            <a [routerLink]="['/destinations', destination.id]" class="btn btn-secondary">
+              Explore
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Deals Section -->
+  <section class="deals-section section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Hot Deals</h2>
+        <p>Limited time offers for smart travelers</p>
+      </div>
+
+      <div class="deals-grid">
+        <div class="deal-card" *ngFor="let deal of deals">
+          <div class="deal-badge">-{{deal.discount}}%</div>
+          <div class="deal-image">
+            <img [src]="deal.image" [alt]="deal.title">
+          </div>
+          <div class="deal-content">
+            <h3>{{deal.title}}</h3>
+            <p>{{deal.description}}</p>
+            <div class="deal-price">
+              <span class="old-price">${{deal.oldPrice}}</span>
+              <span class="new-price">${{deal.newPrice}}</span>
+            </div>
+            <a [routerLink]="['/destinations', getDestinationId(deal.id)]" class="btn btn-primary">
+              Book Now
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-content">
+        <h2>Ready for Your Next Adventure?</h2>
+        <p>Sign up for exclusive deals and travel inspiration</p>
+
+        <form class="cta-form" (ngSubmit)="subscribe()" #ctaForm="ngForm">
+          <div class="form-group">
+            <input
+              type="email"
+              [(ngModel)]="email"
+              name="email"
+              placeholder="Enter your email address"
+              required
+              pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+              class="cta-input"
+              #emailInput="ngModel"
+            >
+            <div *ngIf="emailInput.invalid && emailInput.touched" class="error-message">
+              Please enter a valid email address
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            class="btn btn-primary btn-large"
+            [disabled]="!emailInput.valid || isSubmitting"
+          >
+            <span *ngIf="!isSubmitting">Subscribe</span>
+            <span *ngIf="isSubmitting" class="loading">Subscribing...</span>
+          </button>
+        </form>
+
+        <div class="subscription-message" *ngIf="subscriptionMessage" [class.success]="isSuccess" [class.error]="!isSuccess">
+          {{subscriptionMessage}}
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

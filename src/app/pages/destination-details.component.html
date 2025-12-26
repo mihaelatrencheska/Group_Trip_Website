@@ -1,0 +1,155 @@
+<div class="destination-details-page">
+  <!-- Destination Header -->
+  <section class="destination-header" [style.backgroundImage]="'url(' + destination?.headerImage + ')'">
+    <div class="container">
+      <div class="header-content">
+        <h1 style="text-align: center;">{{destination?.name}} Itinerary</h1>
+        <p style="text-align: center;">{{destination?.tagline}}</p>
+        <div class="destination-stats" style="text-align: center;">
+          <span style="display: inline;">✈️ {{destination?.duration}} days</span>
+          <span style="display: inline;">⭐ {{destination?.rating}}/5 rating</span>
+          <span style="display: inline;">👥 {{destination?.groupSize}} people max</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery Section -->
+  <section class="gallery-section section" *ngIf="destination?.gallery">
+    <div class="container">
+      <h2>Photo Gallery</h2>
+      <div class="gallery-grid">
+        <div class="gallery-item" *ngFor="let image of destination?.gallery" (click)="openGallery(image)">
+          <img [src]="image" alt="Gallery Image">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery Modal -->
+  <div class="gallery-modal" *ngIf="selectedImage" (click)="closeGallery()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <span class="close" (click)="closeGallery()">&times;</span>
+      <img [src]="selectedImage" alt="Fullscreen Gallery">
+    </div>
+  </div>
+
+  <!-- Itinerary Section -->
+  <section class="itinerary-section section">
+    <div class="container">
+      <h2>{{destination?.duration}}-Day Tour Itinerary</h2>
+
+      <div class="itinerary-timeline">
+        <div class="timeline-item" *ngFor="let day of destination?.itinerary; let i = index">
+          <div class="day-number">Day {{i + 1}}</div>
+          <div class="timeline-content">
+            <h3>
+              <span class="day-icon"></span>
+              {{day.title}}
+            </h3>
+            <p>{{day.description}}</p>
+            <div class="day-activities">
+              <div class="activity" *ngFor="let activity of day.activities">
+                <span class="activity-time">{{activity.time}}</span>
+                <span class="activity-name">{{activity.name}}</span>
+              </div>
+            </div>
+
+            <!-- Highlight for special days -->
+            <div class="highlight-box" *ngIf="(i === 0 || i >= 9) && destination?.name === 'Bali Paradise Getaway'">
+              <h4>
+                {{i === 0 ? 'Welcome Celebration' : 'Bali Paradise'}}
+              </h4>
+              <p>
+                {{i === 0 ?
+                  'Special welcome events and orientation to start your journey' :
+                  'Discover the magic of Bali with tropical adventures and cultural experiences'
+                }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section class="pricing-section section">
+    <div class="container">
+      <h2>Package Details</h2>
+
+      <div class="pricing-grid">
+        <div class="price-card">
+          <h3>Basic Package</h3>
+          <div class="price">${{destination?.price?.basic}}</div>
+          <div class="price-period">per person</div>
+          <ul class="features">
+            <li class="included">✓ Accommodation (3-star)</li>
+            <li class="included">✓ Daily Breakfast</li>
+            <li class="included">✓ Guided Tours</li>
+            <li class="included">✓ Airport Transfers</li>
+            <li class="excluded">✗ Travel Insurance</li>
+            <li class="excluded">✗ All Meals Included</li>
+            <li class="excluded">✗ Premium Experiences</li>
+          </ul>
+          <button class="btn btn-secondary" (click)="bookPackage('basic', destination?.price?.basic)">
+            Book Basic
+          </button>
+        </div>
+
+        <div class="price-card featured">
+          <div class="popular-badge">Most Popular</div>
+          <h3>Premium Package</h3>
+          <div class="price">${{destination?.price?.premium}}</div>
+          <div class="price-period">per person</div>
+          <ul class="features">
+            <li class="included">✓ Accommodation (4-star)</li>
+            <li class="included">✓ All Meals Included</li>
+            <li class="included">✓ Guided Tours</li>
+            <li class="included">✓ Airport Transfers</li>
+            <li class="included">✓ Travel Insurance</li>
+            <li class="included">✓ Premium Experiences</li>
+            <li class="included">✓ 24/7 Concierge</li>
+          </ul>
+          <button class="btn btn-primary" (click)="bookPackage('premium', destination?.price?.premium)">
+            Book Premium
+          </button>
+        </div>
+
+        <div class="price-card">
+          <h3>Luxury Package</h3>
+          <div class="price">${{destination?.price?.luxury}}</div>
+          <div class="price-period">per person</div>
+          <ul class="features">
+            <li class="included">✓ Accommodation (5-star)</li>
+            <li class="included">✓ All Meals Included</li>
+            <li class="included">✓ Private Guided Tours</li>
+            <li class="included">✓ Luxury Airport Transfers</li>
+            <li class="included">✓ Comprehensive Travel Insurance</li>
+            <li class="included">✓ VIP Experiences</li>
+            <li class="included">✓ Personal Butler Service</li>
+          </ul>
+          <button class="btn btn-secondary" (click)="bookPackage('luxury', destination?.price?.luxury)">
+            Book Luxury
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-content">
+        <h2>Ready to Explore {{destination?.name}}?</h2>
+        <p>Book your spot now and get <strong>20% OFF</strong> our Premium Package for early bookings!</p>
+        <div class="cta-buttons">
+          <button class="btn btn-discount btn-large" (click)="bookTour()">
+            🎉 Get 20% Off Now
+          </button>
+          <p class="cta-note">Limited time offer. Subject to availability.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

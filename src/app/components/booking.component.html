@@ -1,0 +1,142 @@
+<div class="container mt-4" [class.trip-booking-bg]="isTripBooking">
+  <!-- Flying plane animation for trip bookings -->
+  <div class="flying-plane" *ngIf="isTripBooking">
+    <div class="plane-shadow"></div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <h2 *ngIf="!isTripBooking">Book a Service</h2>
+      <h2 *ngIf="isTripBooking">Complete Your Trip Booking</h2>
+      
+      @if (error() && !isTripBooking) {
+        <div class="alert alert-danger">
+          {{ error() }}
+          <button class="btn-close float-end" (click)="clearError()"></button>
+        </div>
+      }
+      
+      <!-- Trip Booking Details -->
+      <div *ngIf="isTripBooking && bookingData" class="alert alert-info mb-4">
+        <h4>{{ bookingData.title }}</h4>
+        <p *ngIf="bookingData.discount" class="text-success fw-bold">{{ bookingData.discount }}</p>
+        <p><strong>Price:</strong> ${{ bookingData.price }}</p>
+        <p *ngIf="bookingData.totalPrice"><strong>Total:</strong> ${{ bookingData.totalPrice }}</p>
+      </div>
+
+      <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
+        <!-- Service selection only for regular bookings -->
+        <div class="mb-3" *ngIf="!isTripBooking">
+          <label class="form-label">Service *</label>
+          <select 
+            class="form-select" 
+            formControlName="serviceId" 
+            (change)="onServiceSelect($event)"
+          >
+            <option value="">Select a service</option>
+            @for (service of services(); track service.id) {
+              <option [value]="service.id">
+                {{ service.name }} - ${{ service.price }} ({{ service.duration }} mins)
+              </option>
+            }
+          </select>
+          @if (bookingForm.get('serviceId')?.invalid && bookingForm.get('serviceId')?.touched) {
+            <div class="text-danger">Please select a service</div>
+          }
+        </div>
+        
+        <!-- Date and time selection only for regular bookings -->
+        <div class="row" *ngIf="!isTripBooking">
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label">Date *</label>
+              <input
+                type="date"
+                class="form-control"
+                formControlName="date"
+                [min]="today | date:'yyyy-MM-dd'"
+                (change)="onDateChange($event)"
+              >
+              @if (bookingForm.get('date')?.invalid && bookingForm.get('date')?.touched) {
+                <div class="text-danger">Please select a date</div>
+              }
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label">Time Slot *</label>
+              <select class="form-select" formControlName="startTime">
+                <option value="">Select a time</option>
+                @for (slot of availableSlots; track slot.startTime) {
+                  <option [value]="slot.startTime" [disabled]="!slot.isAvailable">
+                    {{ slot.startTime }} - {{ slot.endTime }}
+                    @if (!slot.isAvailable) { (Unavailable) }
+                  </option>
+                }
+              </select>
+              @if (bookingForm.get('startTime')?.invalid && bookingForm.get('startTime')?.touched) {
+                <div class="text-danger">Please select a time slot</div>
+              }
+            </div>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label">Your Name *</label>
+              <input type="text" class="form-control" formControlName="customerName">
+              @if (bookingForm.get('customerName')?.invalid && bookingForm.get('customerName')?.touched) {
+                <div class="text-danger">Please enter your name</div>
+              }
+            </div>
+          </div>
+          
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label">Email *</label>
+              <input type="email" class="form-control" formControlName="customerEmail">
+              @if (bookingForm.get('customerEmail')?.invalid && bookingForm.get('customerEmail')?.touched) {
+                <div class="text-danger">Please enter a valid email</div>
+              }
+            </div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <label class="form-label">Phone Number</label>
+          <input type="tel" class="form-control" formControlName="customerPhone">
+        </div>
+        
+        <div class="mb-3">
+          <label class="form-label">Additional Notes</label>
+          <textarea class="form-control" formControlName="notes" rows="3"></textarea>
+        </div>
+        
+        @if (selectedService && !isTripBooking) {
+          <div class="alert alert-info">
+            <strong>Selected Service:</strong> {{ selectedService.name }}<br>
+            <strong>Duration:</strong> {{ selectedService.duration }} minutes<br>
+            <strong>Price:</strong> ${{ selectedService.price }}
+          </div>
+        }
+        
+        <button 
+          type="submit" 
+          class="btn btn-primary" 
+          [disabled]="bookingForm.invalid || isLoading()"
+        >
+          @if (isLoading()) {
+            <span class="spinner-border spinner-border-sm me-2"></span>
+            Processing...
+          } @else {
+            Book Now
+          }
+        </button>
+      </form>
+    </div>
+    
+    <!-- Only show bookings sidebar for regular service bookings -->
+  </div>
+</div>

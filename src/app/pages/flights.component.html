@@ -1,0 +1,145 @@
+ <div class="page-header hero-image">
+ <div class="hero-overlay"></div>
+ <div class="container hero-content">
+   <h1>Flights</h1>
+   <p>Book your next journey with our exclusive deals</p>
+ </div>
+</div>
+
+
+    <section class="section">
+      <div class="container">
+        <div class="flight-search">
+          <div class="search-card">
+            <h2>Search Flights</h2>
+            <div class="search-form">
+              <div class="form-group">
+                <label>From</label>
+                <select [(ngModel)]="searchFrom">
+                  <option value="">Select City</option>
+                  <option *ngFor="let city of cities" [value]="city">{{city}}</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>To</label>
+                <select [(ngModel)]="searchTo">
+                  <option value="">Select City</option>
+                  <option *ngFor="let city of cities" [value]="city">{{city}}</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Departure</label>
+                <input type="date" [(ngModel)]="departureDate" [min]="today">
+              </div>
+              <div class="form-group">
+                <label>Return</label>
+                <input type="date" [(ngModel)]="returnDate" [min]="departureDate || today">
+              </div>
+              <div class="form-group">
+                <label>Passengers</label>
+                <select [(ngModel)]="passengers">
+                  <option *ngFor="let option of passengerOptions" [value]="option">{{option}}</option>
+                </select>
+              </div>
+              <button class="btn btn-primary" (click)="searchFlights()">Search Flights</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Search Results -->
+        <div class="search-results" *ngIf="showResults && filteredFlights.length > 0">
+          <h2>Available Flights ({{filteredFlights.length}})</h2>
+          <div class="flights-list">
+            <div class="flight-card" *ngFor="let flight of filteredFlights">
+              <div class="flight-header">
+                <div class="flight-airline">{{flight.airline}}</div>
+                <div class="flight-number">{{flight.flightNumber}}</div>
+                <div class="flight-status" [class]="flight.status">{{flight.status}}</div>
+              </div>
+              
+              <div class="flight-route">
+                <div class="route-from">
+                  <div class="city">{{flight.from}}</div>
+                  <div class="time">{{flight.departureTime}}</div>
+                  <div class="date">{{flight.departureDate}}</div>
+                </div>
+                
+                <div class="route-info">
+                  <div class="duration">⏱️ {{flight.duration}}</div>
+                  <div class="stops" *ngIf="flight.stops > 0">✈️ {{flight.stops}} stop(s)</div>
+                  <div class="stops" *ngIf="flight.stops === 0">✈️ Direct</div>
+                </div>
+                
+                <div class="route-to">
+                  <div class="city">{{flight.to}}</div>
+                  <div class="time">{{flight.arrivalTime}}</div>
+                  <div class="date">{{flight.arrivalDate}}</div>
+                </div>
+              </div>
+              
+              <div class="flight-details">
+                <div class="detail">
+                  <span class="label">Aircraft:</span>
+                  <span class="value">{{flight.aircraft}}</span>
+                </div>
+                <div class="detail">
+                  <span class="label">Seats Left:</span>
+                  <span class="value" [class.low]="flight.seatsLeft < 10">{{flight.seatsLeft}}</span>
+                </div>
+                <div class="detail">
+                  <span class="label">Baggage:</span>
+                  <span class="value">{{flight.baggage}}</span>
+                </div>
+              </div>
+              
+              <div class="flight-price">
+                <div class="price-section">
+                  <div class="price">{{ flight.price | currency }}</div>
+                  <div class="price-note">per passenger</div>
+                  <div class="total-price">Total: {{ calculateTotal(flight.price) | currency }}</div>
+                </div>
+                <button class="btn btn-primary" (click)="bookFlight(flight)" [disabled]="flight.seatsLeft === 0">
+                  {{ flight.seatsLeft === 0 ? 'Sold Out' : 'Book Now' }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- No Results Message -->
+        <div class="no-results" *ngIf="showResults && filteredFlights.length === 0">
+          <div class="no-results-icon">✈️</div>
+          <h3>No flights found</h3>
+          <p>Try adjusting your search criteria or dates</p>
+          <button class="btn btn-secondary" (click)="resetSearch()">Clear Search</button>
+        </div>
+
+        <div class="flight-deals">
+          <h2>Special Flight Deals</h2>
+          <div class="deals-grid">
+            <div class="flight-deal" *ngFor="let deal of flightDeals">
+              <div class="deal-header">
+                <span class="airline">{{deal.airline}}</span>
+                <span class="discount">-{{deal.discount}}%</span>
+              </div>
+              <div class="route">
+                <span class="from">{{deal.from}}</span>
+                <span class="arrow">→</span>
+                <span class="to">{{deal.to}}</span>
+              </div>
+              <div class="deal-info">
+                <div class="duration">⏱️ {{deal.duration}}</div>
+                <div class="stops">✈️ {{deal.stops}}</div>
+                <div class="class">💺 {{deal.class}}</div>
+              </div>
+              <div class="price-info">
+                <span class="old-price">{{ deal.oldPrice | currency }}</span>
+                <span class="new-price">{{ deal.newPrice | currency }}</span>
+              </div>
+              <div class="savings">Save {{ deal.oldPrice - deal.newPrice | currency }}!</div>
+              <button class="btn btn-primary" (click)="bookDeal(deal)">Book Now</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
