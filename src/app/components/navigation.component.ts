@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 @Component({
@@ -281,14 +281,18 @@ export class NavigationComponent implements OnInit {
   isMenuOpen = false;
   currentUser: any = null;
 
+  constructor(@Inject(PLATFORM_ID) private platformId: any) {}
+
   ngOnInit(): void {
     this.checkUserStatus();
   }
 
   checkUserStatus(): void {
-    const userData = localStorage.getItem('user');
-    if (userData) {
-      this.currentUser = JSON.parse(userData);
+    if (isPlatformBrowser(this.platformId)) {
+      const userData = localStorage.getItem('user');
+      if (userData) {
+        this.currentUser = JSON.parse(userData);
+      }
     }
   }
 
@@ -301,7 +305,9 @@ export class NavigationComponent implements OnInit {
   }
 
   signOut(): void {
-    localStorage.removeItem('user');
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem('user');
+    }
     this.currentUser = null;
   }
 }
