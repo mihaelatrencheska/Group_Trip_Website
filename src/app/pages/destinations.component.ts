@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../environment';
 
 @Component({
   selector: 'app-destinations',
@@ -159,55 +161,27 @@ import { RouterModule } from '@angular/router';
     }
   `]
 })
-export class DestinationsComponent {
-  cities = [
-    {
-      id: 'rome',
-      name: 'Rome',
-      image: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=800&q=80',
-      description: 'Discover the Eternal City, where ancient ruins meet Renaissance masterpieces in a timeless blend of history and beauty.'
-    },
-    {
-      id: 'amsterdam',
-      name: 'Amsterdam',
-      image: 'https://images.unsplash.com/photo-1534351590666-13e3e96b5017?w=800&q=80',
-      description: 'Experience the enchanting canals, vibrant culture, and artistic heritage of this picturesque Dutch gem.'
-    },
-    {
-      id: 'munich',
-      name: 'Munich',
-      image: 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=800&q=80',
-      description: 'Discover the vibrant Bavarian capital, where beer gardens, historic architecture, and modern innovation blend seamlessly.'
-    },
-    {
-      id: 'vienna',
-      name: 'Vienna',
-      image: 'https://images.unsplash.com/photo-1516550893923-42d28e5677af?w=800&q=80',
-      description: 'Indulge in Vienna\'s imperial elegance, world-class music, and stunning architecture that embodies classical beauty.'
-    },
-    {
-      id: 'sydney',
-      name: 'Sydney',
-      image: 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=800&q=80',
-      description: 'Marvel at Sydney\'s stunning harbor, iconic landmarks, and laid-back coastal beauty that captures the essence of Australia.'
-    },
-    {
-      id: 'hawaii',
-      name: 'Hawaii',
-      image: 'https://images.unsplash.com/photo-1462400362591-9ca55235346a?q=80&w=1132&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      description: 'Discover Hawaii\'s volcanic landscapes, pristine beaches, and aloha spirit in this tropical paradise of islands.'
-    },
-    {
-      id: 'malaga',
-      name: 'Malaga',
-      image: 'https://images.unsplash.com/photo-1709229001947-23eef33c12a5?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      description: 'Bask in the sunny Mediterranean charm of Malaga, where historic fortresses meet pristine beaches and vibrant culture.'
-    },
-    {
-      id: 'nice',
-      name: 'Nice',
-      image: 'https://images.unsplash.com/photo-1491166617655-0723a0999cfc?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      description: 'Relax on the French Riviera in Nice, where stunning beaches, colorful markets, and Mediterranean charm create an idyllic escape.'
-    }
-  ];
+export class DestinationsComponent implements OnInit {
+  private apiUrl = `${environment.apiUrl}/destinations`;
+
+  cities: any[] = [];
+
+  constructor(private http: HttpClient) {}
+
+  ngOnInit(): void {
+    this.loadDestinations();
+  }
+
+  loadDestinations(): void {
+    this.http.get<any[]>(this.apiUrl).subscribe({
+      next: (destinations) => {
+        this.cities = destinations;
+      },
+      error: (error) => {
+        console.error('Error loading destinations:', error);
+        // Fallback to empty array if API fails
+        this.cities = [];
+      }
+    });
+  }
 }

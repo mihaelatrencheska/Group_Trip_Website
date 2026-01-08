@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 import { BookingService } from '../services/booking.service';
+import { environment } from '../environment';
 
 @Component({
   selector: 'app-flights',
@@ -837,7 +839,9 @@ export class FlightsComponent implements OnInit {
     }
   ];
 
-  constructor(private bookingService: BookingService, private router: Router) {}
+  private apiUrl = `${environment.apiUrl}/flights`;
+
+  constructor(private bookingService: BookingService, private router: Router, private http: HttpClient) {}
 
   ngOnInit() {
     // Initialize with some default search values
@@ -853,135 +857,23 @@ export class FlightsComponent implements OnInit {
     nextWeek.setDate(nextWeek.getDate() + 7);
     this.returnDate = nextWeek.toISOString().split('T')[0];
 
-    // Generate flights with future dates
-    this.generateFlights();
+    // Load flights from API
+    this.loadFlights();
   }
 
-  generateFlights() {
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    const tomorrowStr = tomorrow.toISOString().split('T')[0];
-
-    const nextWeek = new Date(tomorrow);
-    nextWeek.setDate(nextWeek.getDate() + 7);
-    const nextWeekStr = nextWeek.toISOString().split('T')[0];
-
-    const nextMonth = new Date(tomorrow);
-    nextMonth.setDate(nextMonth.getDate() + 30);
-    const nextMonthStr = nextMonth.toISOString().split('T')[0];
-
-    this.flights = [
-      {
-        id: 'FL001',
-        airline: 'SkyWings',
-        flightNumber: 'SW202',
-        from: 'New York (JFK)',
-        to: 'London (LHR)',
-        departureTime: '10:00',
-        arrivalTime: '22:30',
-        departureDate: tomorrowStr,
-        arrivalDate: tomorrowStr,
-        duration: '7h 30m',
-        stops: 0,
-        price: 600,
-        aircraft: 'Boeing 777',
-        seatsLeft: 8,
-        baggage: '1 x 23kg',
-        status: 'available'
+  loadFlights() {
+    this.http.get<any[]>(this.apiUrl).subscribe({
+      next: (flights) => {
+        this.flights = flights;
+        this.filteredFlights = [...this.flights];
       },
-      {
-        id: 'FL002',
-        airline: 'OceanAir',
-        flightNumber: 'OA317',
-        from: 'Los Angeles (LAX)',
-        to: 'Paris (CDG)',
-        departureTime: '14:30',
-        arrivalTime: '10:45',
-        departureDate: nextWeekStr,
-        arrivalDate: new Date(new Date(nextWeekStr).getTime() + 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-        duration: '11h 15m',
-        stops: 0,
-        price: 770,
-        aircraft: 'Airbus A350',
-        seatsLeft: 15,
-        baggage: '2 x 23kg',
-        status: 'available'
-      },
-      {
-        id: 'FL003',
-        airline: 'GlobalJet',
-        flightNumber: 'GJ739',
-        from: 'Chicago (ORD)',
-        to: 'Tokyo (NRT)',
-        departureTime: '21:45',
-        arrivalTime: '02:05',
-        departureDate: nextMonthStr,
-        arrivalDate: new Date(new Date(nextMonthStr).getTime() + 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-        duration: '13h 20m',
-        stops: 1,
-        price: 1080,
-        aircraft: 'Boeing 787',
-        seatsLeft: 3,
-        baggage: '2 x 23kg',
-        status: 'limited'
-      },
-      {
-        id: 'FL004',
-        airline: 'Continental',
-        flightNumber: 'CT178',
-        from: 'Miami (MIA)',
-        to: 'Rome (FCO)',
-        departureTime: '19:15',
-        arrivalTime: '09:45',
-        departureDate: nextWeekStr,
-        arrivalDate: new Date(new Date(nextWeekStr).getTime() + 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-        duration: '10h 30m',
-        stops: 0,
-        price: 715,
-        aircraft: 'Airbus A330',
-        seatsLeft: 12,
-        baggage: '1 x 23kg',
-        status: 'available'
-      },
-      {
-        id: 'FL005',
-        airline: 'SkyWings',
-        flightNumber: 'SW456',
-        from: 'London (LHR)',
-        to: 'New York (JFK)',
-        departureTime: '09:00',
-        arrivalTime: '12:30',
-        departureDate: tomorrowStr,
-        arrivalDate: tomorrowStr,
-        duration: '8h 30m',
-        stops: 0,
-        price: 650,
-        aircraft: 'Boeing 777',
-        seatsLeft: 5,
-        baggage: '1 x 23kg',
-        status: 'available'
-      },
-      {
-        id: 'FL006',
-        airline: 'OceanAir',
-        flightNumber: 'OA789',
-        from: 'Paris (CDG)',
-        to: 'Los Angeles (LAX)',
-        departureTime: '11:00',
-        arrivalTime: '14:45',
-        departureDate: nextWeekStr,
-        arrivalDate: nextWeekStr,
-        duration: '12h 45m',
-        stops: 0,
-        price: 820,
-        aircraft: 'Airbus A350',
-        seatsLeft: 10,
-        baggage: '2 x 23kg',
-        status: 'available'
+      error: (error) => {
+        console.error('Error loading flights:', error);
+        // Fallback to empty array if API fails
+        this.flights = [];
+        this.filteredFlights = [];
       }
-    ];
-
-    this.filteredFlights = [...this.flights];
+    });
   }
 
   searchFlights() {
@@ -997,29 +889,8 @@ export class FlightsComponent implements OnInit {
       return matchesFrom && matchesTo;
     });
 
-    // If no matches, show a message or generate mock flights
-    if (this.filteredFlights.length === 0 && (this.searchFrom || this.searchTo)) {
-      // Generate a mock flight for the selected route
-      const mockFlight = {
-        id: 'MOCK001',
-        airline: 'Demo Airlines',
-        flightNumber: 'DA001',
-        from: this.searchFrom || 'Any City',
-        to: this.searchTo || 'Any City',
-        departureTime: '10:00',
-        arrivalTime: '14:00',
-        departureDate: this.departureDate || this.today,
-        arrivalDate: this.departureDate || this.today,
-        duration: '4h 00m',
-        stops: 0,
-        price: 450,
-        aircraft: 'Boeing 737',
-        seatsLeft: 20,
-        baggage: '1 x 23kg',
-        status: 'available'
-      };
-      this.filteredFlights = [mockFlight];
-    }
+    // If no matches, just show empty results
+    // No mock data generation
 
     // Sort by price (lowest first)
     this.filteredFlights.sort((a, b) => a.price - b.price);

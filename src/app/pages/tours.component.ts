@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../environment';
 
 @Component({
   selector: 'app-tours',
@@ -368,95 +370,31 @@ import { Router } from '@angular/router';
     }
   `]
 })
-export class ToursComponent {
-  constructor(private router: Router) {}
+export class ToursComponent implements OnInit {
+  private apiUrl = `${environment.apiUrl}/tours`;
 
-  tours = [
-    {
-      id: 'morocco',
-      title: 'Morocco Cultural Journey',
-      type: 'cultural',
-      location: 'Morocco',
-      duration: 7,
-      price: 1299,
-      groupSize: 12,
-      rating: 4.8,
-      accommodation: 'Riad Hotels',
-      image: 'https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?q=80&w=1167&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      description: 'Explore Moroccan culture with souk visits, traditional music, tagine cooking classes, and desert experiences.',
-      isPremium: false,
-      isComingSoon: false
-    },
-    {
-      id: 'himalayan',
-      title: 'Himalayan Trekking',
-      type: 'adventure',
-      location: 'Nepal Himalayas',
-      duration: 14,
-      price: 1899,
-      groupSize: 8,
-      rating: 4.9,
-      accommodation: 'Mountain Lodges',
-      image: 'https://images.unsplash.com/photo-1617380613434-7495e9b45dfb?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      description: 'Challenging trek through the Himalayas with experienced guides and breathtaking mountain views.'
-    },
-    {
-      id: 3,
-      title: 'Italian Food & Wine Tour',
-      type: 'food',
-      location: 'Tuscany, Italy',
-      duration: 8,
-      price: 2499,
-      groupSize: 10,
-      rating: 4.7,
-      accommodation: 'Vineyard Estates',
-      image: 'https://images.unsplash.com/photo-1498579150354-977475b7ea0b?w=800&q=80',
-      description: 'Culinary journey through Tuscany with wine tastings, cooking classes, and gourmet dining experiences.',
-      isComingSoon: true
-    },
-    {
-      id: 4,
-      title: 'Japanese Wellness ',
-      type: 'wellness',
-      location: 'Kyoto, Japan',
-      duration: 5,
-      price: 1799,
-      groupSize: 15,
-      rating: 4.6,
-      accommodation: 'Ryokan Inns',
-      image: 'https://images.unsplash.com/photo-1600618528240-fb9fc964b853?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      description: 'Zen meditation, hot spring baths, and traditional tea ceremonies in historic Kyoto.',
-      isPremium: true
-    },
-    {
-      id: 5,
-      title: 'African Safari',
-      type: 'family',
-      location: 'Serengeti, Tanzania',
-      duration: 10,
-      price: 2999,
-      groupSize: 16,
-      rating: 4.8,
-      accommodation: 'Luxury Tents',
-      image: 'https://images.unsplash.com/photo-1577971132997-c10be9372519?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      description: 'Family-friendly safari with wildlife viewing, cultural visits, and kid-friendly activities.',
-      isPremium: true
-    },
-    {
-      id: 6,
-      title: 'Greek Islands Sailing Tour',
-      type: 'adventure',
-      location: 'Greek Islands',
-      duration: 9,
-      price: 2199,
-      groupSize: 14,
-      rating: 4.5,
-      accommodation: 'Private Yacht',
-      image: 'https://images.unsplash.com/photo-1533105079780-92b9be482077?w=800&q=80',
-      description: 'Sail through the Greek islands with snorkeling, island hopping, and authentic Greek cuisine.',
-      isComingSoon: true
-    }
-  ];
+  constructor(private router: Router, private http: HttpClient) {}
+
+  ngOnInit(): void {
+    this.loadTours();
+  }
+
+  loadTours(): void {
+    this.http.get<any[]>(this.apiUrl).subscribe({
+      next: (tours) => {
+        this.tours = tours;
+        this.filteredTours = [...this.tours];
+      },
+      error: (error) => {
+        console.error('Error loading tours:', error);
+        // Fallback to empty array if API fails
+        this.tours = [];
+        this.filteredTours = [];
+      }
+    });
+  }
+
+  tours: any[] = [];
   
   filteredTours = [...this.tours];
   selectedType = '';

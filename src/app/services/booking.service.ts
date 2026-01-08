@@ -33,13 +33,7 @@ export class BookingService {
   readonly isLoading = this.loadingSignal.asReadonly();
   readonly error = this.errorSignal.asReadonly();
 
-  // Local storage for demo purposes (remove for production)
-  private localStorageKey = 'booking_demo_data';
-
-  constructor(private http: HttpClient) {
-    // For demo: Initialize with mock data if no API available
-    this.initializeDemoData();
-  }
+  constructor(private http: HttpClient) {}
 
   /**
    * Get all bookings with optional filters
@@ -95,24 +89,20 @@ export class BookingService {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
 
-    // For demo, generate an ID
-    const newBooking: Booking = {
-      ...this.mapToBooking(bookingData),
-      id: this.generateId(),
-      createdAt: new Date(),
-      updatedAt: new Date()
-    };
-
-    // For demo: Skip HTTP call and directly update local state
-    const currentBookings = this.bookingsSignal();
-    this.bookingsSignal.set([...currentBookings, newBooking]);
-    this.loadingSignal.set(false);
-
-    // For demo: Save to localStorage
-    this.saveToLocalStorage();
-
-    // Return the created booking
-    return of(newBooking);
+    return this.http.post<Booking>(this.apiUrl, bookingData).pipe(
+      tap(newBooking => {
+        // Update local state
+        const currentBookings = this.bookingsSignal();
+        this.bookingsSignal.set([...currentBookings, newBooking]);
+        this.loadingSignal.set(false);
+      }),
+      catchError(error => {
+        this.errorSignal.set('Failed to create booking');
+        this.loadingSignal.set(false);
+        console.error('Error creating booking:', error);
+        return throwError(() => error);
+      })
+    );
   }
 
   /**
@@ -125,14 +115,11 @@ export class BookingService {
       tap(updatedBooking => {
         // Update local state
         const currentBookings = this.bookingsSignal();
-        const updatedBookings = currentBookings.map(booking => 
+        const updatedBookings = currentBookings.map(booking =>
           booking.id === id ? { ...booking, ...updatedBooking, updatedAt: new Date() } : booking
         );
         this.bookingsSignal.set(updatedBookings);
         this.loadingSignal.set(false);
-        
-        // For demo: Save to localStorage
-        this.saveToLocalStorage();
       }),
       catchError(error => {
         this.loadingSignal.set(false);
@@ -180,9 +167,6 @@ export class BookingService {
         const filteredBookings = currentBookings.filter(booking => booking.id !== id);
         this.bookingsSignal.set(filteredBookings);
         this.loadingSignal.set(false);
-        
-        // For demo: Save to localStorage
-        this.saveToLocalStorage();
       }),
       catchError(error => {
         this.loadingSignal.set(false);
@@ -199,29 +183,35 @@ export class BookingService {
   getServices(): Observable<Service[]> {
     this.loadingSignal.set(true);
 
-    // For demo: Skip HTTP call and use demo data directly
-    const demoServices = this.getDemoServices();
-    this.servicesSignal.set(demoServices);
-    this.loadingSignal.set(false);
-
-    return of(demoServices);
+    return this.http.get<Service[]>(this.servicesUrl).pipe(
+      tap(services => {
+        this.servicesSignal.set(services);
+        this.loadingSignal.set(false);
+      }),
+      catchError(error => {
+        this.errorSignal.set('Failed to load services');
+        this.loadingSignal.set(false);
+        console.error('Error loading services:', error);
+        return throwError(() => error);
+      })
+    );
   }
 
   /**
    * Get available time slots for a service on a specific date
    */
   getAvailableSlots(serviceId: string, date: Date): Observable<TimeSlot[]> {
-    // For demo: Generate mock time slots
-    const timeSlots: TimeSlot[] = [
-      { date, startTime: '09:00', endTime: '10:00', isAvailable: true, capacity: 1, bookedCount: 0 },
-      { date, startTime: '10:00', endTime: '11:00', isAvailable: true, capacity: 1, bookedCount: 0 },
-      { date, startTime: '11:00', endTime: '12:00', isAvailable: false, capacity: 1, bookedCount: 1 },
-      { date, startTime: '14:00', endTime: '15:00', isAvailable: true, capacity: 1, bookedCount: 0 },
-      { date, startTime: '15:00', endTime: '16:00', isAvailable: true, capacity: 1, bookedCount: 0 },
-      { date, startTime: '16:00', endTime: '17:00', isAvailable: true, capacity: 1, bookedCount: 0 }
-    ];
-
-    return of(timeSlots);
+    const dateString = date.toISOString().split('T')[0];
+    return this.http.get<any[]>(`${this.apiUrl}/../timeSlots`).pipe(
+      map(slots => slots
+        .filter(slot => slot.serviceId === serviceId && slot.date === dateString && slot.isAvailable)
+        .map(slot => ({ ...slot, date }))
+      ),
+      catchError(error => {
+        console.error('Error loading time slots:', error);
+        return throwError(() => error);
+      })
+    );
   }
 
   /**
@@ -315,171 +305,6 @@ export class BookingService {
     );
   }
 
-  // Helper methods for demo
-  private mapToBooking(dto: CreateBookingDTO): Booking {
-    // In a real app, you would fetch the service details from your database
-    const service = this.servicesSignal().find(s => s.id === dto.serviceId) || {
-      id: dto.serviceId,
-      name: 'Unknown Service',
-      price: 0,
-      currency: 'USD',
-      duration: 60
-    };
-
-    return {
-      id: this.generateId(),
-      userId: 'demo-user-id', // Replace with actual user ID
-      serviceId: dto.serviceId,
-      serviceName: service.name,
-      date: dto.date,
-      startTime: dto.startTime,
-      endTime: this.calculateEndTime(dto.startTime, service.duration),
-      duration: service.duration,
-      status: BookingStatus.PENDING,
-      price: service.price,
-      currency: service.currency,
-      notes: dto.notes,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      customerName: dto.customerName,
-      customerEmail: dto.customerEmail,
-      customerPhone: dto.customerPhone,
-      paymentStatus: PaymentStatus.PENDING
-    };
-  }
-
-  private calculateEndTime(startTime: string, duration: number): string {
-    const [hours, minutes] = startTime.split(':').map(Number);
-    const startDate = new Date();
-    startDate.setHours(hours, minutes, 0, 0);
-    
-    const endDate = new Date(startDate.getTime() + duration * 60000);
-    return `${endDate.getHours().toString().padStart(2, '0')}:${endDate.getMinutes().toString().padStart(2, '0')}`;
-  }
-
-  private generateId(): string {
-    return Date.now().toString(36) + Math.random().toString(36).substr(2);
-  }
-
-  private initializeDemoData(): void {
-    // Check if we have demo data in localStorage
-    const savedData = localStorage.getItem(this.localStorageKey);
-    if (savedData) {
-      try {
-        const data = JSON.parse(savedData);
-        this.bookingsSignal.set(data.bookings || []);
-        this.servicesSignal.set(data.services || this.getDemoServices());
-      } catch (error) {
-        console.error('Error loading demo data:', error);
-        this.setupDemoData();
-      }
-    } else {
-      this.setupDemoData();
-    }
-  }
-
-  private setupDemoData(): void {
-    const demoServices = this.getDemoServices();
-    const demoBookings = this.getDemoBookings(demoServices);
-    
-    this.servicesSignal.set(demoServices);
-    this.bookingsSignal.set(demoBookings);
-    this.saveToLocalStorage();
-  }
-
-  private getDemoServices(): Service[] {
-    return [
-      {
-        id: 'service-1',
-        name: 'Haircut',
-        description: 'Professional haircut and styling',
-        duration: 30,
-        price: 25,
-        currency: 'USD',
-        category: 'Hair',
-        availableSlots: [],
-        maxCapacity: 1
-      },
-      {
-        id: 'service-2',
-        name: 'Massage Therapy',
-        description: 'Full body massage therapy session',
-        duration: 60,
-        price: 80,
-        currency: 'USD',
-        category: 'Wellness',
-        availableSlots: [],
-        maxCapacity: 1
-      },
-      {
-        id: 'service-3',
-        name: 'Personal Training',
-        description: 'One-on-one personal training session',
-        duration: 60,
-        price: 50,
-        currency: 'USD',
-        category: 'Fitness',
-        availableSlots: [],
-        maxCapacity: 1
-      }
-    ];
-  }
-
-  private getDemoBookings(services: Service[]): Booking[] {
-    const today = new Date();
-    const tomorrow = new Date(today);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    
-    return [
-      {
-        id: 'booking-1',
-        userId: 'user-1',
-        serviceId: services[0].id,
-        serviceName: services[0].name,
-        date: today,
-        startTime: '10:00',
-        endTime: '10:30',
-        duration: services[0].duration,
-        status: BookingStatus.CONFIRMED,
-        price: services[0].price,
-        currency: services[0].currency,
-        notes: 'First haircut',
-        createdAt: new Date(today.getTime() - 86400000), // Yesterday
-        updatedAt: new Date(today.getTime() - 86400000),
-        customerName: 'John Doe',
-        customerEmail: 'john@example.com',
-        customerPhone: '555-0101',
-        paymentStatus: PaymentStatus.PAID
-      },
-      {
-        id: 'booking-2',
-        userId: 'user-1',
-        serviceId: services[1].id,
-        serviceName: services[1].name,
-        date: tomorrow,
-        startTime: '14:00',
-        endTime: '15:00',
-        duration: services[1].duration,
-        status: BookingStatus.PENDING,
-        price: services[1].price,
-        currency: services[1].currency,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        customerName: 'Jane Smith',
-        customerEmail: 'jane@example.com',
-        customerPhone: '555-0102',
-        paymentStatus: PaymentStatus.PENDING
-      }
-    ];
-  }
-
-  private saveToLocalStorage(): void {
-    const data = {
-      bookings: this.bookingsSignal(),
-      services: this.servicesSignal()
-    };
-    localStorage.setItem(this.localStorageKey, JSON.stringify(data));
-  }
 
   /**
    * Book a destination package
@@ -526,9 +351,4 @@ export class BookingService {
     this.errorSignal.set(null);
   }
 
-  // Clear all bookings (for testing)
-  clearBookings(): void {
-    this.bookingsSignal.set([]);
-    localStorage.removeItem(this.localStorageKey);
-  }
 }

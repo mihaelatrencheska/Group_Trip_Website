@@ -26,6 +26,8 @@ export class BookingComponent implements OnInit {
   // Trip booking data
   bookingData: any = null;
   isTripBooking = false;
+  bookingSuccess = false;
+  successMessage = '';
 
   constructor(private bookingService: BookingService) {
     this.services = this.bookingService.services;
@@ -33,7 +35,7 @@ export class BookingComponent implements OnInit {
     this.error = this.bookingService.error;
     this.bookingForm = new FormGroup({
       serviceId: new FormControl(''),
-      date: new FormControl(''),
+      date: new FormControl(this.today.toISOString().split('T')[0]),
       startTime: new FormControl(''),
       customerName: new FormControl('', Validators.required),
       customerEmail: new FormControl('', [Validators.required, Validators.email]),
@@ -48,29 +50,34 @@ export class BookingComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Check if we have booking data from navigation
-    const navigation = window.history.state;
-    if (navigation && navigation.bookingData) {
-      this.bookingData = navigation.bookingData;
-      this.isTripBooking = true;
+    // Check if we have booking data from navigation (only on browser)
+    if (typeof window !== 'undefined') {
+      const navigation = window.history.state;
+      if (navigation && navigation.bookingData) {
+        this.bookingData = navigation.bookingData;
+        this.isTripBooking = true;
 
-      // Update validators for trip booking
-      this.bookingForm.get('serviceId')?.clearValidators();
-      this.bookingForm.get('date')?.clearValidators();
-      this.bookingForm.get('startTime')?.clearValidators();
-      this.bookingForm.get('serviceId')?.updateValueAndValidity();
-      this.bookingForm.get('date')?.updateValueAndValidity();
-      this.bookingForm.get('startTime')?.updateValueAndValidity();
+        // Update validators for trip booking
+        this.bookingForm.get('serviceId')?.clearValidators();
+        this.bookingForm.get('date')?.clearValidators();
+        this.bookingForm.get('startTime')?.clearValidators();
+        this.bookingForm.get('serviceId')?.updateValueAndValidity();
+        this.bookingForm.get('date')?.updateValueAndValidity();
+        this.bookingForm.get('startTime')?.updateValueAndValidity();
 
-      // Pre-fill form with booking data
-      this.bookingForm.patchValue({
-        customerName: '',
-        customerEmail: '',
-        customerPhone: '',
-        notes: `Booking: ${this.bookingData.title}`
-      });
+        // Pre-fill form with booking data
+        this.bookingForm.patchValue({
+          customerName: '',
+          customerEmail: '',
+          customerPhone: '',
+          notes: `Booking: ${this.bookingData.title}`
+        });
+      } else {
+        // Only load services for regular bookings
+        this.loadServices();
+      }
     } else {
-      // Only load services for regular bookings
+      // On server, don't load services
       this.loadServices();
     }
   }
@@ -165,7 +172,8 @@ export class BookingComponent implements OnInit {
         }).subscribe({
           next: (booking: Booking) => {
             console.log('Trip booking created successfully:', booking);
-            alert('Trip booked successfully! Your booking confirmation has been sent to your email.');
+            this.bookingSuccess = true;
+            this.successMessage = 'Trip booked successfully! Your booking confirmation has been sent to your email.';
             this.bookingForm.reset();
             this.bookingData = null;
             this.isTripBooking = false;
@@ -185,10 +193,11 @@ export class BookingComponent implements OnInit {
         this.bookingService.createBooking(bookingData).subscribe({
           next: (booking: Booking) => {
             console.log('Booking created successfully:', booking);
+            this.bookingSuccess = true;
+            this.successMessage = 'Booking created successfully!';
             this.bookingForm.reset();
             this.selectedService = null;
             this.availableSlots = [];
-            alert('Booking created successfully!');
           },
           error: (error: any) => {
             console.error('Error creating booking:', error);
@@ -211,5 +220,12 @@ export class BookingComponent implements OnInit {
         this.markFormGroupTouched(control);
       }
     });
+  }
+
+  bookAdditionalService(): void {
+    this.bookingSuccess = false;
+    this.successMessage = '';
+    this.isTripBooking = false;
+    this.loadServices();
   }
 }

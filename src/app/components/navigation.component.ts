@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-navigation',
@@ -45,12 +46,12 @@ import { RouterModule } from '@angular/router';
                (click)="closeMenu()">
               Tours
             </a>
-            <a routerLink="/deals" 
+            <a routerLink="/deals"
                routerLinkActive="active"
                (click)="closeMenu()">
               Deals
             </a>
-            <a routerLink="/about" 
+            <a routerLink="/about"
                routerLinkActive="active"
                (click)="closeMenu()">
               About
@@ -281,19 +282,12 @@ export class NavigationComponent implements OnInit {
   isMenuOpen = false;
   currentUser: any = null;
 
-  constructor(@Inject(PLATFORM_ID) private platformId: any) {}
+  constructor(@Inject(PLATFORM_ID) private platformId: any, private authService: AuthService) {}
 
   ngOnInit(): void {
-    this.checkUserStatus();
-  }
-
-  checkUserStatus(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      const userData = localStorage.getItem('user');
-      if (userData) {
-        this.currentUser = JSON.parse(userData);
-      }
-    }
+    this.authService.currentUser$.subscribe(user => {
+      this.currentUser = user;
+    });
   }
 
   toggleMenu(): void {
@@ -305,9 +299,6 @@ export class NavigationComponent implements OnInit {
   }
 
   signOut(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.removeItem('user');
-    }
-    this.currentUser = null;
+    this.authService.signOut().subscribe();
   }
 }

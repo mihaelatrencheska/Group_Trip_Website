@@ -9,7 +9,8 @@ The Group Trip Website aims to provide a comprehensive platform where users can:
 - **Discover Destinations**: Browse detailed information about various travel destinations with photos, itineraries, and pricing
 - **Book Group Tours**: Reserve spots for organized group tours with different package options (Basic, Premium, Luxury)
 - **Find Flights**: Search and book flights with real-time availability and pricing
-- **Manage Bookings**: Handle reservations through an intuitive booking system
+- **Book Services**: Reserve wellness and personal care services like massage, personal training, and facials
+- **Manage Bookings**: Handle reservations through an intuitive booking system with additional service options
 - **User Authentication**: Sign in to manage personal bookings and preferences
 
 The application features a modern, mobile-responsive design with immersive hero images, smooth animations, and an intuitive user experience.
@@ -59,8 +60,15 @@ group-trip-website/
 - **Destination Exploration**: Detailed destination pages with galleries, itineraries, and pricing
 - **Flight Booking**: Search flights by route, date, and passenger count
 - **Tour Packages**: Multiple pricing tiers (Basic, Premium, Luxury) for each destination
+- **Service Booking**: Book wellness services like massage, personal training, and facials
 - **User Authentication**: Sign-in functionality with local storage persistence
-- **Booking System**: Comprehensive booking flow with confirmation
+- **Booking System**: Comprehensive booking flow with confirmation, payment processing, email notifications, booking statistics, and additional service options
+- **Advanced Booking Management**: Cancel, confirm, and complete bookings with status tracking
+- **Payment Integration**: Secure payment processing for bookings
+- **Email Notifications**: Automated confirmation emails and booking reminders
+- **Booking Analytics**: Real-time statistics on bookings (total, confirmed, pending, cancelled, completed)
+- **Time Slot Management**: Availability checking and scheduling for services
+- **User Dashboard**: Personal booking history and upcoming reservations
 
 ### Technical Features
 - **Angular 17+**: Modern Angular with standalone components
@@ -72,12 +80,14 @@ group-trip-website/
 
 ## 🛠️ Technology Stack
 
-- **Framework**: Angular 17+
+- **Framework**: Angular 17+ with Signals for reactive state management
 - **Language**: TypeScript
 - **Styling**: SCSS/CSS with responsive design
 - **Forms**: Angular Reactive Forms
 - **Routing**: Angular Router
-- **HTTP Client**: Angular HttpClient
+- **HTTP Client**: Angular HttpClient with Fetch API
+- **API**: JSON Server for mock backend (data stored in db.json)
+- **Proxy**: Development proxy configuration for API communication
 - **Build Tool**: Angular CLI
 - **Package Manager**: npm
 
@@ -101,19 +111,26 @@ group-trip-website/
    npm install
    ```
 
-3. **Start development server**
+3. **Start the API server**
+   ```bash
+   npm run json-server
+   ```
+   This starts the mock API server on `http://localhost:3000`
+
+4. **Start development server** (in a new terminal)
    ```bash
    ng serve
    ```
 
-4. **Open in browser**
+5. **Open in browser**
    Navigate to `http://localhost:4200/`
 
 ## 🔧 Development
 
 ### Available Scripts
 
-- `ng serve` - Start development server
+- `ng serve` - Start Angular development server
+- `npm run json-server` - Start mock API server
 - `ng build` - Build for production
 - `ng test` - Run unit tests
 - `ng lint` - Run linting
@@ -137,7 +154,7 @@ group-trip-website/
 
 ### Services
 - **AuthService**: Handles user authentication and session management
-- **BookingService**: Manages booking data and state
+- **BookingService**: Comprehensive booking management including CRUD operations, payment processing, email notifications, statistics, availability checking, and state management with Angular signals
 
 ### Models
 - **Booking**: TypeScript interface for booking data structure

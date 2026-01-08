@@ -24,7 +24,8 @@
         <p *ngIf="bookingData.totalPrice"><strong>Total:</strong> ${{ bookingData.totalPrice }}</p>
       </div>
 
-      <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
+      <div *ngIf="!bookingSuccess">
+        <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
         <!-- Service selection only for regular bookings -->
         <div class="mb-3" *ngIf="!isTripBooking">
           <label class="form-label">Service *</label>
@@ -134,7 +135,19 @@
             Book Now
           }
         </button>
-      </form>
+        </form>
+      </div>
+
+      <!-- Success Section -->
+      <div *ngIf="bookingSuccess" class="success-section">
+        <div class="alert alert-success">
+          <h4>✅ {{ successMessage }}</h4>
+          <p>Would you like to book additional services like massage or haircut?</p>
+          <button class="btn btn-primary" (click)="bookAdditionalService()">
+            Book Additional Services
+          </button>
+        </div>
+      </div>
     </div>
     
     <!-- Only show bookings sidebar for regular service bookings -->

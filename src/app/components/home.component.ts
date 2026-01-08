@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -11,6 +12,8 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
+  constructor(private router: Router) {}
+
   destinations = [
     {
       id: 'asia',
@@ -37,7 +40,7 @@ export class HomeComponent {
       hotels: 550
     }
   ];
-  
+
   deals = [
     {
       id: '1',
@@ -80,6 +83,11 @@ export class HomeComponent {
       '3': 'caribbean'
     };
     return mapping[dealId] || 'asia'; // default to asia if not found
+  }
+
+  bookDeal(deal: any): void {
+    // Implement booking logic here
+    console.log('Booking deal:', deal);
   }
 
   subscribe() {

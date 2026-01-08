@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../environment';
 
 @Component({
   selector: 'app-footer',
@@ -427,11 +429,15 @@ import { FormsModule } from '@angular/forms';
   `]
 })
 export class FooterComponent {
+  private apiUrl = `${environment.apiUrl}/subscriptions`;
+
   email = '';
   subscriptionMessage = '';
   isSuccess = false;
   isSubmitting = false;
   currentYear = new Date().getFullYear();
+
+  constructor(private http: HttpClient) {}
 
   subscribe() {
     if (!this.email) {
@@ -448,28 +454,23 @@ export class FooterComponent {
 
     this.isSubmitting = true;
 
-    // Simulate API call
-    setTimeout(() => {
-      // In a real application, you would make an HTTP request here
-      const success = Math.random() > 0.1; // 90% success rate for demo
-      
-      if (success) {
-        // Store subscription in localStorage before clearing email
-        const subscriptions = JSON.parse(localStorage.getItem('newsletterSubscriptions') || '[]');
-        subscriptions.push({
-          email: this.email,
-          date: new Date().toISOString()
-        });
-        localStorage.setItem('newsletterSubscriptions', JSON.stringify(subscriptions));
+    const subscriptionData = {
+      email: this.email,
+      date: new Date().toISOString()
+    };
 
+    this.http.post(this.apiUrl, subscriptionData).subscribe({
+      next: () => {
         this.showMessage(`You've subscribed successfully!`, true);
         this.email = '';
-      } else {
+        this.isSubmitting = false;
+      },
+      error: (error) => {
+        console.error('Subscription error:', error);
         this.showMessage('Something went wrong. Please try again later.', false);
+        this.isSubmitting = false;
       }
-      
-      this.isSubmitting = false;
-    }, 1500);
+    });
   }
 
   private showMessage(message: string, success: boolean) {

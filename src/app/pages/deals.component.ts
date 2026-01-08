@@ -1,6 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router'; // ADD THIS IMPORT
+import { RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../environment';
 
 @Component({
   selector: 'app-deals',
@@ -22,7 +25,7 @@ import { RouterModule } from '@angular/router'; // ADD THIS IMPORT
                 <h3>{{deal.title}}</h3>
                 <p class="location">📍 {{deal.location}}</p>
                 <p class="description">{{deal.description}}</p>
-                <button [routerLink]="['/destinations', deal.id]" class="btn btn-primary">{{deal.buttonText}}</button>
+                <button (click)="bookExclusiveDeal(deal)" class="btn btn-primary">{{deal.buttonText}}</button>
               </div>
             </div>
           </div>
@@ -60,7 +63,7 @@ import { RouterModule } from '@angular/router'; // ADD THIS IMPORT
                   <div class="new-price">$ {{deal.discountedPrice}}</div>
                   <div class="savings">Save $ {{deal.savings}}</div>
                 </div>
-                <button [routerLink]="['/destinations', deal.id]" class="btn btn-primary">Book Now</button>
+                <button (click)="bookMainDeal(deal)" class="btn btn-primary">Book Now</button>
               </div>
             </div>
           </div>
@@ -440,10 +443,61 @@ import { RouterModule } from '@angular/router'; // ADD THIS IMPORT
     }
   `]
 })
-export class DealsComponent {
+export class DealsComponent implements OnInit {
+  private apiUrl = `${environment.apiUrl}/deals`;
+
   hours = '48';
   minutes = '15';
   seconds = '30';
+
+  exclusiveDeals: any[] = [];
+  mainPageDeals: any[] = [];
+
+  constructor(private http: HttpClient, private router: Router) {}
+
+  ngOnInit(): void {
+    this.loadDeals();
+  }
+
+  loadDeals(): void {
+    this.http.get<any>(this.apiUrl).subscribe({
+      next: (deals) => {
+        this.exclusiveDeals = deals.exclusiveDeals || [];
+        this.mainPageDeals = deals.mainPageDeals || [];
+      },
+      error: (error) => {
+        console.error('Error loading deals:', error);
+        this.exclusiveDeals = [];
+        this.mainPageDeals = [];
+      }
+    });
+  }
+
+  bookExclusiveDeal(deal: any): void {
+    const bookingDetails = {
+      ...deal,
+      type: 'deal',
+      title: deal.title,
+      price: deal.price || 1000 // Default price if not specified
+    };
+
+    this.router.navigate(['/booking'], {
+      state: { bookingData: bookingDetails }
+    });
+  }
+
+  bookMainDeal(deal: any): void {
+    const bookingDetails = {
+      ...deal,
+      type: 'deal',
+      title: deal.title,
+      price: deal.discountedPrice
+    };
+
+    this.router.navigate(['/booking'], {
+      state: { bookingData: bookingDetails }
+    });
+  }
   
   categories = [
     { 
@@ -476,75 +530,4 @@ export class DealsComponent {
     }
   ];
   
-  exclusiveDeals = [
-    {
-      id: 'malaga',
-      title: 'Barcelona Grand Prix Plus',
-      location: 'Malaga, Spain',
-      image: 'https://images.unsplash.com/photo-1519589863-f02030e7127e?q=80&w=1073&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      description: 'Get 30% off Grand Prix tickets when you book the Malaga trip. Experience the thrill of Formula 1 racing!',
-      buttonText: 'Book Malaga Trip'
-    },
-    {
-      id: 'sydney',
-      title: 'Sydney Adventure Package',
-      location: 'Sydney, Australia',
-      image: 'https://plus.unsplash.com/premium_photo-1720568151853-64f14825daac?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      description: 'Free bungee jumping included when you book the Sydney trip. Conquer your fears with this ultimate adrenaline rush!',
-      buttonText: 'Book Sydney Trip'
-    },
-    {
-      id: 'nice',
-      title: 'Nice Culinary Experience',
-      location: 'Nice, France',
-      image: 'https://images.unsplash.com/photo-1669722115140-d314341ab05d?q=80&w=1141&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      description: '20% off Michelin dinner at a famous restaurant when you book the Nice trip. Indulge in world-class French cuisine!',
-      buttonText: 'Book Nice Trip'
-    }
-  ];
-
-  mainPageDeals = [
-    {
-      id: 'bali',
-      discount: 55,
-      tag: 'Early Bird',
-      title: 'Bali Paradise Getaway',
-      location: 'Bali, Indonesia',
-      duration: 7,
-      groupSize: 2,
-      originalPrice: 3599,
-      discountedPrice: 1619,
-      savings: 1980,
-      image: 'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=800&q=80',
-      description: 'Luxury resort stay with flights included. Experience tropical paradise with world-class amenities.'
-    },
-    {
-      id: 'spain-party',
-      discount: 45,
-      tag: 'Party Deal',
-      title: 'Spanish Party Gateway',
-      location: 'Barcelona & Madrid, Spain',
-      duration: 6,
-      groupSize: 18,
-      originalPrice: 3299,
-      discountedPrice: 1814,
-      savings: 1485,
-      image: 'https://images.unsplash.com/photo-1571984405176-5958bd9ac31d?q=80&w=1332&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      description: '6-day Spanish party extravaganza from Barcelona to Madrid with premium nightlife experiences.'
-    },
-    {
-      id: 'caribbean',
-      discount: 50,
-      tag: 'Cruise Deal',
-      title: 'Caribbean Cruise Adventure',
-      location: 'Multiple Caribbean Islands',
-      duration: 10,
-      groupSize: 2,
-      originalPrice: 1999,
-      discountedPrice: 999,
-      savings: 1000,
-      image: 'https://plus.unsplash.com/premium_photo-1697730545957-fbfe258301a0?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      description: 'Luxury cruise through Bahamas, Jamaica & Grand Cayman with all-inclusive amenities.'
-    }
-  ];
 }

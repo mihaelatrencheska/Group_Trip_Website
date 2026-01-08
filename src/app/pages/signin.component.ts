@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-signin',
@@ -153,27 +154,27 @@ export class SigninComponent {
   isSubmitting = false;
   submitSuccess = false;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   onSubmit(event: Event): void {
     event.preventDefault();
     this.isSubmitting = true;
 
-    // Simulate sign in process
-    setTimeout(() => {
-      this.isSubmitting = false;
-      this.submitSuccess = true;
+    this.authService.signIn(this.formData).subscribe({
+      next: (user) => {
+        this.isSubmitting = false;
+        this.submitSuccess = true;
 
-      // Store user data
-      localStorage.setItem('user', JSON.stringify({
-        name: this.formData.name,
-        email: this.formData.email
-      }));
-
-      // Redirect to home after successful sign in
-      setTimeout(() => {
-        window.location.href = '/';
-      }, 2000);
-    }, 1500);
+        // Redirect to home after successful sign in
+        setTimeout(() => {
+          this.router.navigate(['/']);
+        }, 2000);
+      },
+      error: (error) => {
+        this.isSubmitting = false;
+        console.error('Sign in error:', error);
+        // Handle error, perhaps show message
+      }
+    });
   }
 }

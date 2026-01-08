@@ -1,0 +1,976 @@
+{
+  "services": [
+    {
+      "id": "service-1",
+      "name": "Haircut",
+      "description": "Professional haircut and styling",
+      "duration": 30,
+      "price": 25,
+      "currency": "USD",
+      "category": "Hair",
+      "availableSlots": [],
+      "maxCapacity": 1
+    },
+    {
+      "id": "service-2",
+      "name": "Massage Therapy",
+      "description": "Full body massage therapy session",
+      "duration": 60,
+      "price": 80,
+      "currency": "USD",
+      "category": "Wellness",
+      "availableSlots": [],
+      "maxCapacity": 1
+    },
+    {
+      "id": "service-3",
+      "name": "Personal Training",
+      "description": "One-on-one personal training session",
+      "duration": 60,
+      "price": 50,
+      "currency": "USD",
+      "category": "Fitness",
+      "availableSlots": [],
+      "maxCapacity": 1
+    },
+    {
+      "id": "service-4",
+      "name": "Swedish Massage",
+      "description": "Relaxing Swedish massage for stress relief",
+      "duration": 60,
+      "price": 75,
+      "currency": "USD",
+      "category": "Wellness",
+      "availableSlots": [],
+      "maxCapacity": 1
+    },
+    {
+      "id": "service-5",
+      "name": "Deep Tissue Massage",
+      "description": "Deep tissue massage for muscle tension",
+      "duration": 90,
+      "price": 100,
+      "currency": "USD",
+      "category": "Wellness",
+      "availableSlots": [],
+      "maxCapacity": 1
+    },
+    {
+      "id": "service-6",
+      "name": "Facial Treatment",
+      "description": "Professional facial treatment and skincare",
+      "duration": 45,
+      "price": 60,
+      "currency": "USD",
+      "category": "Beauty",
+      "availableSlots": [],
+      "maxCapacity": 1
+    },
+    {
+      "id": "service-7",
+      "name": "Yoga Session",
+      "description": "Guided yoga session for relaxation and flexibility",
+      "duration": 60,
+      "price": 40,
+      "currency": "USD",
+      "category": "Wellness",
+      "availableSlots": [],
+      "maxCapacity": 5
+    },
+    {
+      "id": "service-8",
+      "name": "Nutrition Consultation",
+      "description": "Personalized nutrition advice and meal planning",
+      "duration": 45,
+      "price": 70,
+      "currency": "USD",
+      "category": "Health",
+      "availableSlots": [],
+      "maxCapacity": 1
+    },
+    {
+      "id": "flight-service",
+      "name": "Flight Booking",
+      "description": "Flight booking service",
+      "duration": 0,
+      "price": 0,
+      "currency": "USD",
+      "category": "Travel",
+      "availableSlots": [],
+      "maxCapacity": 1
+    },
+    {
+      "id": "destination-service",
+      "name": "Destination Booking",
+      "description": "Destination booking service",
+      "duration": 0,
+      "price": 0,
+      "currency": "USD",
+      "category": "Travel",
+      "availableSlots": [],
+      "maxCapacity": 1
+    }
+  ],
+  "bookings": [
+    {
+      "id": "booking-1",
+      "userId": "user-1",
+      "serviceId": "service-1",
+      "serviceName": "Haircut",
+      "date": "2024-01-08T00:00:00.000Z",
+      "startTime": "10:00",
+      "endTime": "10:30",
+      "duration": 30,
+      "status": "CONFIRMED",
+      "price": 25,
+      "currency": "USD",
+      "notes": "First haircut",
+      "createdAt": "2024-01-07T00:00:00.000Z",
+      "updatedAt": "2024-01-07T00:00:00.000Z",
+      "customerName": "John Doe",
+      "customerEmail": "john@example.com",
+      "customerPhone": "555-0101",
+      "paymentStatus": "PAID"
+    },
+    {
+      "id": "booking-2",
+      "userId": "user-1",
+      "serviceId": "service-2",
+      "serviceName": "Massage Therapy",
+      "date": "2024-01-09T00:00:00.000Z",
+      "startTime": "14:00",
+      "endTime": "15:00",
+      "duration": 60,
+      "status": "PENDING",
+      "price": 80,
+      "currency": "USD",
+      "createdAt": "2024-01-08T00:00:00.000Z",
+      "updatedAt": "2024-01-08T00:00:00.000Z",
+      "customerName": "Jane Smith",
+      "customerEmail": "jane@example.com",
+      "customerPhone": "555-0102",
+      "paymentStatus": "PENDING"
+    },
+    {
+      "id": "9a2a",
+      "serviceId": "test-service",
+      "date": "2024-01-08T10:00:00.000Z",
+      "startTime": "10:00",
+      "customerName": "Test User",
+      "customerEmail": "test@example.com",
+      "notes": "Test booking"
+    },
+    {
+      "id": "1bed",
+      "serviceId": "destination-service",
+      "date": "2026-01-08T14:43:02.790Z",
+      "startTime": "10:00",
+      "customerName": "mihaela",
+      "customerEmail": "mihaela_trencheska@yahoo.com",
+      "customerPhone": "075251062",
+      "notes": "Trip: Asian Explorer - premium Package, Price: $4299"
+    },
+    {
+      "id": "ac1e",
+      "serviceId": "destination-service",
+      "date": "2026-01-08T14:43:54.450Z",
+      "startTime": "10:00",
+      "customerName": "daniel",
+      "customerEmail": "danieltrencheski@gmail.com",
+      "customerPhone": "78549236",
+      "notes": "Trip: Sydney - basic Package, Price: $1499"
+    },
+    {
+      "id": "6889",
+      "serviceId": "destination-service",
+      "date": "2026-01-08T15:01:06.988Z",
+      "startTime": "10:00",
+      "customerName": "maja",
+      "customerEmail": "majanaumova@yahoo.com",
+      "customerPhone": "071264636",
+      "notes": "Trip: American Dream Tour - luxury Package, Price: $4999"
+    },
+    {
+      "id": "7cc1",
+      "serviceId": "destination-service",
+      "date": "2026-01-08T15:01:47.620Z",
+      "startTime": "10:00",
+      "customerName": "dejan",
+      "customerEmail": "dejantrencheski@gmail.com",
+      "customerPhone": "78964523",
+      "notes": "Trip: European Grand Tour - premium Package, Price: $4599"
+    },
+    {
+      "id": "0723",
+      "serviceId": "destination-service",
+      "date": "2026-01-08T15:02:18.764Z",
+      "startTime": "10:00",
+      "customerName": "fani",
+      "customerEmail": "fani123@gmail.com",
+      "customerPhone": "7789456",
+      "notes": "Trip: Bali Paradise Getaway, Price: $1799"
+    },
+    {
+      "id": "1ad6",
+      "serviceId": "destination-service",
+      "date": "2026-01-08T15:03:18.296Z",
+      "startTime": "10:00",
+      "customerName": "adam",
+      "customerEmail": "adamcrust@gmail.com",
+      "customerPhone": "78923654",
+      "notes": "Trip: European Grand Tour - luxury Package, Price: $6299"
+    },
+    {
+      "id": "7026",
+      "serviceId": "destination-service",
+      "date": "2026-01-08T15:16:49.875Z",
+      "startTime": "10:00",
+      "customerName": "martina",
+      "customerEmail": "dimitrievska@yahoo.com",
+      "customerPhone": "07485963",
+      "notes": "Trip: Caribbean Cruise Adventure - premium Package, Price: $2899"
+    },
+    {
+      "id": "ea0c",
+      "serviceId": "destination-service",
+      "date": "2026-01-08T15:41:36.428Z",
+      "startTime": "10:00",
+      "customerName": "miharla",
+      "customerEmail": "mihaelatrenchesk@yahoo.com",
+      "customerPhone": "789456123",
+      "notes": "Trip: Barcelona Grand Prix Plus, Price: $1000"
+    },
+    {
+      "id": "079f",
+      "serviceId": "destination-service",
+      "date": "2026-01-08T15:44:20.702Z",
+      "startTime": "10:00",
+      "customerName": "david",
+      "customerEmail": "davidjanchev@yahoo.com",
+      "customerPhone": "789231564",
+      "notes": "Trip: Morocco Cultural Journey - basic Package, Price: $1299"
+    },
+    {
+      "id": "0663",
+      "serviceId": "destination-service",
+      "date": "2026-01-08T15:50:05.481Z",
+      "startTime": "10:00",
+      "customerName": "dejan",
+      "customerEmail": "dejantr@yahoo.com",
+      "customerPhone": "1236985",
+      "notes": "Trip: Sydney - premium Package, Price: $2199"
+    },
+    {
+      "id": "2afe",
+      "serviceId": "",
+      "date": "2026-01-13T00:00:00.000Z",
+      "startTime": "",
+      "customerName": "dejan",
+      "customerEmail": "dejan@yahoo.com",
+      "customerPhone": "78946",
+      "notes": "//"
+    },
+    {
+      "id": "4937",
+      "serviceId": "destination-service",
+      "date": "2026-01-08T16:01:13.430Z",
+      "startTime": "10:00",
+      "customerName": "gabriela",
+      "customerEmail": "gabriela@yahoo.com",
+      "customerPhone": "7894661",
+      "notes": "Trip: Spanish Party Gateway - basic Package, Price: $3299"
+    },
+    {
+      "id": "5351",
+      "serviceId": "service-2",
+      "date": "2026-01-27T00:00:00.000Z",
+      "startTime": "",
+      "customerName": "gabriela",
+      "customerEmail": "gabriela@yahoo.com",
+      "customerPhone": "789456",
+      "notes": "//"
+    },
+    {
+      "id": "2a5b",
+      "serviceId": "destination-service",
+      "date": "2026-01-08T16:03:40.334Z",
+      "startTime": "10:00",
+      "customerName": "jana",
+      "customerEmail": "jana123@gmail.com",
+      "customerPhone": "078252633",
+      "notes": "Trip: Spanish Party Gateway - basic Package, Price: $3299"
+    },
+    {
+      "id": "92aa",
+      "serviceId": "destination-service",
+      "date": "2026-01-08T16:04:19.507Z",
+      "startTime": "10:00",
+      "customerName": "nora",
+      "customerEmail": "norakiradzeiva@gmail.com",
+      "customerPhone": "0253697",
+      "notes": "Trip: Bali Paradise Getaway - luxury Package, Price: $3599"
+    },
+    {
+      "id": "7394",
+      "serviceId": "destination-service",
+      "date": "2026-01-08T16:09:03.478Z",
+      "startTime": "10:00",
+      "customerName": "dimo",
+      "customerEmail": "dimo456@yahoo.com",
+      "customerPhone": "203569",
+      "notes": "Trip: Spanish Party Gateway, Price: $1814"
+    },
+    {
+      "id": "b986",
+      "serviceId": "flight-service",
+      "date": "2026-01-08T16:12:21.817Z",
+      "startTime": "10:00",
+      "customerName": "verche",
+      "customerEmail": "verchenaj@yahoo.com",
+      "customerPhone": "072256984",
+      "notes": "Trip: OceanAir Deal: LAX to PAR, Price: $770"
+    },
+    {
+      "id": "7c86",
+      "serviceId": "destination-service",
+      "date": "2026-01-08T16:14:20.499Z",
+      "startTime": "10:00",
+      "customerName": "daniel",
+      "customerEmail": "trencheski@yahoo.com",
+      "customerPhone": "075846",
+      "notes": "Trip: American Dream Tour - luxury Package, Price: $4999"
+    },
+    {
+      "id": "cc3f",
+      "serviceId": "destination-service",
+      "date": "2026-01-08T16:16:14.392Z",
+      "startTime": "10:00",
+      "customerName": "maja",
+      "customerEmail": "naumova@gmail.com",
+      "customerPhone": "7894656",
+      "notes": "Trip: Malaga - basic Package, Price: $599"
+    },
+    {
+      "id": "8e80",
+      "serviceId": "destination-service",
+      "date": "2026-01-08T16:35:25.124Z",
+      "startTime": "10:00",
+      "customerName": "deko",
+      "customerEmail": "deko123@yahoo.com",
+      "customerPhone": "07369856",
+      "notes": "Trip: Asian Explorer - luxury Package, Price: $5999"
+    }
+  ],
+  "users": [
+    {
+      "id": "user-1",
+      "name": "John Doe",
+      "email": "john@example.com"
+    },
+    {
+      "id": "784a",
+      "name": "Mihaela",
+      "email": "mihaela_trencheska@yahoo.com"
+    }
+  ],
+  "timeSlots": [
+    {
+      "id": "slot-1",
+      "serviceId": "service-1",
+      "date": "2024-01-08",
+      "startTime": "09:00",
+      "endTime": "10:00",
+      "isAvailable": true,
+      "capacity": 1,
+      "bookedCount": 0
+    },
+    {
+      "id": "slot-2",
+      "serviceId": "service-1",
+      "date": "2024-01-08",
+      "startTime": "10:00",
+      "endTime": "11:00",
+      "isAvailable": true,
+      "capacity": 1,
+      "bookedCount": 0
+    },
+    {
+      "id": "slot-3",
+      "serviceId": "service-1",
+      "date": "2024-01-08",
+      "startTime": "11:00",
+      "endTime": "12:00",
+      "isAvailable": false,
+      "capacity": 1,
+      "bookedCount": 1
+    },
+    {
+      "id": "slot-4",
+      "serviceId": "service-1",
+      "date": "2024-01-08",
+      "startTime": "14:00",
+      "endTime": "15:00",
+      "isAvailable": true,
+      "capacity": 1,
+      "bookedCount": 0
+    },
+    {
+      "id": "slot-5",
+      "serviceId": "service-1",
+      "date": "2024-01-08",
+      "startTime": "15:00",
+      "endTime": "16:00",
+      "isAvailable": true,
+      "capacity": 1,
+      "bookedCount": 0
+    },
+    {
+      "id": "slot-6",
+      "serviceId": "service-1",
+      "date": "2024-01-08",
+      "startTime": "16:00",
+      "endTime": "17:00",
+      "isAvailable": true,
+      "capacity": 1,
+      "bookedCount": 0
+    },
+    {
+      "id": "slot-7",
+      "serviceId": "service-2",
+      "date": "2024-01-08",
+      "startTime": "09:00",
+      "endTime": "10:00",
+      "isAvailable": true,
+      "capacity": 1,
+      "bookedCount": 0
+    },
+    {
+      "id": "slot-8",
+      "serviceId": "service-2",
+      "date": "2024-01-08",
+      "startTime": "10:00",
+      "endTime": "11:00",
+      "isAvailable": true,
+      "capacity": 1,
+      "bookedCount": 0
+    },
+    {
+      "id": "slot-9",
+      "serviceId": "service-2",
+      "date": "2024-01-08",
+      "startTime": "14:00",
+      "endTime": "15:00",
+      "isAvailable": true,
+      "capacity": 1,
+      "bookedCount": 0
+    },
+    {
+      "id": "slot-10",
+      "serviceId": "service-3",
+      "date": "2024-01-08",
+      "startTime": "09:00",
+      "endTime": "10:00",
+      "isAvailable": true,
+      "capacity": 1,
+      "bookedCount": 0
+    },
+    {
+      "id": "slot-11",
+      "serviceId": "service-3",
+      "date": "2026-01-08",
+      "startTime": "11:00",
+      "endTime": "12:00",
+      "isAvailable": true,
+      "capacity": 1,
+      "bookedCount": 0
+    },
+    {
+      "id": "slot-12",
+      "serviceId": "service-4",
+      "date": "2024-01-08",
+      "startTime": "10:00",
+      "endTime": "11:00",
+      "isAvailable": true,
+      "capacity": 1,
+      "bookedCount": 0
+    },
+    {
+      "id": "slot-13",
+      "serviceId": "service-4",
+      "date": "2024-01-08",
+      "startTime": "15:00",
+      "endTime": "16:00",
+      "isAvailable": true,
+      "capacity": 1,
+      "bookedCount": 0
+    },
+    {
+      "id": "slot-14",
+      "serviceId": "service-5",
+      "date": "2026-01-08",
+      "startTime": "13:00",
+      "endTime": "15:00",
+      "isAvailable": true,
+      "capacity": 1,
+      "bookedCount": 0
+    },
+    {
+      "id": "slot-15",
+      "serviceId": "service-6",
+      "date": "2024-01-08",
+      "startTime": "09:30",
+      "endTime": "10:15",
+      "isAvailable": true,
+      "capacity": 1,
+      "bookedCount": 0
+    },
+    {
+      "id": "slot-16",
+      "serviceId": "service-7",
+      "date": "2024-01-08",
+      "startTime": "08:00",
+      "endTime": "09:00",
+      "isAvailable": true,
+      "capacity": 5,
+      "bookedCount": 0
+    },
+    {
+      "id": "slot-17",
+      "serviceId": "service-8",
+      "date": "2024-01-08",
+      "startTime": "12:00",
+      "endTime": "12:45",
+      "isAvailable": true,
+      "capacity": 1,
+      "bookedCount": 0
+    },
+    {
+      "id": "slot-18",
+      "serviceId": "service-1",
+      "date": "2026-01-08",
+      "startTime": "09:00",
+      "endTime": "10:00",
+      "isAvailable": true,
+      "capacity": 1,
+      "bookedCount": 0
+    },
+    {
+      "id": "slot-19",
+      "serviceId": "service-1",
+      "date": "2026-01-08",
+      "startTime": "10:00",
+      "endTime": "11:00",
+      "isAvailable": true,
+      "capacity": 1,
+      "bookedCount": 0
+    },
+    {
+      "id": "slot-20",
+      "serviceId": "service-1",
+      "date": "2026-01-08",
+      "startTime": "11:00",
+      "endTime": "12:00",
+      "isAvailable": true,
+      "capacity": 1,
+      "bookedCount": 0
+    },
+    {
+      "id": "slot-21",
+      "serviceId": "service-2",
+      "date": "2026-01-08",
+      "startTime": "14:00",
+      "endTime": "15:00",
+      "isAvailable": true,
+      "capacity": 1,
+      "bookedCount": 0
+    },
+    {
+      "id": "slot-22",
+      "serviceId": "service-2",
+      "date": "2026-01-08",
+      "startTime": "15:00",
+      "endTime": "16:00",
+      "isAvailable": true,
+      "capacity": 1,
+      "bookedCount": 0
+    }
+  ],
+  "subscriptions": [
+    {
+      "id": "fe2a",
+      "email": "test@example.com",
+      "date": "2024-01-08T11:00:00.000Z"
+    }
+  ],
+  "flights": [
+    {
+      "id": "FL001",
+      "airline": "SkyWings",
+      "flightNumber": "SW202",
+      "from": "New York (JFK)",
+      "to": "London (LHR)",
+      "departureTime": "10:00",
+      "arrivalTime": "22:30",
+      "departureDate": "2024-03-15",
+      "arrivalDate": "2024-03-15",
+      "duration": "7h 30m",
+      "stops": 0,
+      "price": 600,
+      "aircraft": "Boeing 777",
+      "seatsLeft": 8,
+      "baggage": "1 x 23kg",
+      "status": "available"
+    },
+    {
+      "id": "FL002",
+      "airline": "OceanAir",
+      "flightNumber": "OA317",
+      "from": "Los Angeles (LAX)",
+      "to": "Paris (CDG)",
+      "departureTime": "14:30",
+      "arrivalTime": "10:45",
+      "departureDate": "2024-03-18",
+      "arrivalDate": "2024-03-19",
+      "duration": "11h 15m",
+      "stops": 0,
+      "price": 770,
+      "aircraft": "Airbus A350",
+      "seatsLeft": 15,
+      "baggage": "2 x 23kg",
+      "status": "available"
+    },
+    {
+      "id": "FL003",
+      "airline": "GlobalJet",
+      "flightNumber": "GJ739",
+      "from": "Chicago (ORD)",
+      "to": "Tokyo (NRT)",
+      "departureTime": "21:45",
+      "arrivalTime": "02:05",
+      "departureDate": "2024-03-20",
+      "arrivalDate": "2024-03-21",
+      "duration": "13h 20m",
+      "stops": 1,
+      "price": 1080,
+      "aircraft": "Boeing 787",
+      "seatsLeft": 3,
+      "baggage": "2 x 23kg",
+      "status": "limited"
+    },
+    {
+      "id": "FL004",
+      "airline": "Continental",
+      "flightNumber": "CT178",
+      "from": "Miami (MIA)",
+      "to": "Rome (FCO)",
+      "departureTime": "19:15",
+      "arrivalTime": "09:45",
+      "departureDate": "2024-03-22",
+      "arrivalDate": "2024-03-23",
+      "duration": "10h 30m",
+      "stops": 0,
+      "price": 715,
+      "aircraft": "Airbus A330",
+      "seatsLeft": 12,
+      "baggage": "1 x 23kg",
+      "status": "available"
+    },
+    {
+      "id": "FL005",
+      "airline": "NorthStar",
+      "flightNumber": "NS456",
+      "from": "Toronto (YYZ)",
+      "to": "Dubai (DXB)",
+      "departureTime": "22:00",
+      "arrivalTime": "18:30",
+      "departureDate": "2024-03-25",
+      "arrivalDate": "2024-03-26",
+      "duration": "12h 30m",
+      "stops": 0,
+      "price": 950,
+      "aircraft": "Boeing 777",
+      "seatsLeft": 20,
+      "baggage": "2 x 23kg",
+      "status": "available"
+    },
+    {
+      "id": "FL006",
+      "airline": "EuroFly",
+      "flightNumber": "EF789",
+      "from": "Frankfurt (FRA)",
+      "to": "New York (JFK)",
+      "departureTime": "11:45",
+      "arrivalTime": "14:20",
+      "departureDate": "2024-03-28",
+      "arrivalDate": "2024-03-28",
+      "duration": "8h 35m",
+      "stops": 0,
+      "price": 680,
+      "aircraft": "Airbus A350",
+      "seatsLeft": 25,
+      "baggage": "1 x 23kg",
+      "status": "available"
+    },
+    {
+      "id": "FL007",
+      "airline": "AeroLink",
+      "flightNumber": "AL123",
+      "from": "London (LHR)",
+      "to": "New York (JFK)",
+      "departureTime": "08:00",
+      "arrivalTime": "11:30",
+      "departureDate": "2024-04-01",
+      "arrivalDate": "2024-04-01",
+      "duration": "8h 30m",
+      "stops": 0,
+      "price": 650,
+      "aircraft": "Boeing 787",
+      "seatsLeft": 18,
+      "baggage": "2 x 23kg",
+      "status": "available"
+    },
+    {
+      "id": "FL008",
+      "airline": "Pacific Wings",
+      "flightNumber": "PW456",
+      "from": "Tokyo (NRT)",
+      "to": "Los Angeles (LAX)",
+      "departureTime": "12:00",
+      "arrivalTime": "05:30",
+      "departureDate": "2024-04-05",
+      "arrivalDate": "2024-04-05",
+      "duration": "11h 30m",
+      "stops": 0,
+      "price": 850,
+      "aircraft": "Airbus A380",
+      "seatsLeft": 22,
+      "baggage": "2 x 23kg",
+      "status": "available"
+    }
+  ],
+  "contacts": [
+    {
+      "id": "f85a",
+      "name": "Mihaela",
+      "email": "mihaela_trencheska@yahoo.com",
+      "phone": "+38975251062",
+      "subject": "booking",
+      "message": "//",
+      "date": "2026-01-08T14:35:16.127Z"
+    }
+  ],
+  "tours": [
+    {
+      "id": "morocco",
+      "title": "Morocco Cultural Journey",
+      "type": "cultural",
+      "location": "Morocco",
+      "duration": 7,
+      "price": 1299,
+      "groupSize": 12,
+      "rating": 4.8,
+      "accommodation": "Riad Hotels",
+      "image": "https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?q=80&w=1167&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "description": "Explore Moroccan culture with souk visits, traditional music, tagine cooking classes, and desert experiences.",
+      "isPremium": false,
+      "isComingSoon": false
+    },
+    {
+      "id": "himalayan",
+      "title": "Himalayan Trekking",
+      "type": "adventure",
+      "location": "Nepal Himalayas",
+      "duration": 14,
+      "price": 1899,
+      "groupSize": 8,
+      "rating": 4.9,
+      "accommodation": "Mountain Lodges",
+      "image": "https://images.unsplash.com/photo-1617380613434-7495e9b45dfb?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "description": "Challenging trek through the Himalayas with experienced guides and breathtaking mountain views.",
+      "isPremium": false,
+      "isComingSoon": false
+    },
+    {
+      "id": "italian-food",
+      "title": "Italian Food & Wine Tour",
+      "type": "food",
+      "location": "Tuscany, Italy",
+      "duration": 8,
+      "price": 2499,
+      "groupSize": 10,
+      "rating": 4.7,
+      "accommodation": "Vineyard Estates",
+      "image": "https://images.unsplash.com/photo-1498579150354-977475b7ea0b?w=800&q=80",
+      "description": "Culinary journey through Tuscany with wine tastings, cooking classes, and gourmet dining experiences.",
+      "isPremium": false,
+      "isComingSoon": true
+    },
+    {
+      "id": "japanese-wellness",
+      "title": "Japanese Wellness",
+      "type": "wellness",
+      "location": "Kyoto, Japan",
+      "duration": 5,
+      "price": 1799,
+      "groupSize": 15,
+      "rating": 4.6,
+      "accommodation": "Ryokan Inns",
+      "image": "https://images.unsplash.com/photo-1600618528240-fb9fc964b853?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "description": "Zen meditation, hot spring baths, and traditional tea ceremonies in historic Kyoto.",
+      "isPremium": true,
+      "isComingSoon": false
+    },
+    {
+      "id": "african-safari",
+      "title": "African Safari",
+      "type": "family",
+      "location": "Serengeti, Tanzania",
+      "duration": 10,
+      "price": 2999,
+      "groupSize": 16,
+      "rating": 4.8,
+      "accommodation": "Luxury Tents",
+      "image": "https://images.unsplash.com/photo-1577971132997-c10be9372519?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "description": "Family-friendly safari with wildlife viewing, cultural visits, and kid-friendly activities.",
+      "isPremium": true,
+      "isComingSoon": false
+    },
+    {
+      "id": "greek-sailing",
+      "title": "Greek Islands Sailing Tour",
+      "type": "adventure",
+      "location": "Greek Islands",
+      "duration": 9,
+      "price": 2199,
+      "groupSize": 14,
+      "rating": 4.5,
+      "accommodation": "Private Yacht",
+      "image": "https://images.unsplash.com/photo-1533105079780-92b9be482077?w=800&q=80",
+      "description": "Sail through the Greek islands with snorkeling, island hopping, and authentic Greek cuisine.",
+      "isPremium": false,
+      "isComingSoon": true
+    }
+  ],
+  "destinations": [
+    {
+      "id": "rome",
+      "name": "Rome",
+      "image": "https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=800&q=80",
+      "description": "Discover the Eternal City, where ancient ruins meet Renaissance masterpieces in a timeless blend of history and beauty."
+    },
+    {
+      "id": "amsterdam",
+      "name": "Amsterdam",
+      "image": "https://images.unsplash.com/photo-1534351590666-13e3e96b5017?w=800&q=80",
+      "description": "Experience the enchanting canals, vibrant culture, and artistic heritage of this picturesque Dutch gem."
+    },
+    {
+      "id": "munich",
+      "name": "Munich",
+      "image": "https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=800&q=80",
+      "description": "Discover the vibrant Bavarian capital, where beer gardens, historic architecture, and modern innovation blend seamlessly."
+    },
+    {
+      "id": "vienna",
+      "name": "Vienna",
+      "image": "https://images.unsplash.com/photo-1516550893923-42d28e5677af?w=800&q=80",
+      "description": "Indulge in Vienna's imperial elegance, world-class music, and stunning architecture that embodies classical beauty."
+    },
+    {
+      "id": "sydney",
+      "name": "Sydney",
+      "image": "https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=800&q=80",
+      "description": "Marvel at Sydney's stunning harbor, iconic landmarks, and laid-back coastal beauty that captures the essence of Australia."
+    },
+    {
+      "id": "hawaii",
+      "name": "Hawaii",
+      "image": "https://images.unsplash.com/photo-1462400362591-9ca55235346a?q=80&w=1132&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "description": "Discover Hawaii's volcanic landscapes, pristine beaches, and aloha spirit in this tropical paradise of islands."
+    },
+    {
+      "id": "malaga",
+      "name": "Malaga",
+      "image": "https://images.unsplash.com/photo-1709229001947-23eef33c12a5?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "description": "Bask in the sunny Mediterranean charm of Malaga, where historic fortresses meet pristine beaches and vibrant culture."
+    },
+    {
+      "id": "nice",
+      "name": "Nice",
+      "image": "https://images.unsplash.com/photo-1491166617655-0723a0999cfc?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "description": "Relax on the French Riviera in Nice, where stunning beaches, colorful markets, and Mediterranean charm create an idyllic escape."
+    }
+  ],
+  "deals": {
+    "exclusiveDeals": [
+      {
+        "id": "malaga",
+        "title": "Barcelona Grand Prix Plus",
+        "location": "Malaga, Spain",
+        "image": "https://images.unsplash.com/photo-1519589863-f02030e7127e?q=80&w=1073&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "description": "Get 30% off Grand Prix tickets when you book the Malaga trip. Experience the thrill of Formula 1 racing!",
+        "buttonText": "Book Malaga Trip"
+      },
+      {
+        "id": "sydney",
+        "title": "Sydney Adventure Package",
+        "location": "Sydney, Australia",
+        "image": "https://plus.unsplash.com/premium_photo-1720568151853-64f14825daac?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "description": "Free bungee jumping included when you book the Sydney trip. Conquer your fears with this ultimate adrenaline rush!",
+        "buttonText": "Book Sydney Trip"
+      },
+      {
+        "id": "nice",
+        "title": "Nice Culinary Experience",
+        "location": "Nice, France",
+        "image": "https://images.unsplash.com/photo-1669722115140-d314341ab05d?q=80&w=1141&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "description": "20% off Michelin dinner at a famous restaurant when you book the Nice trip. Indulge in world-class French cuisine!",
+        "buttonText": "Book Nice Trip"
+      }
+    ],
+    "mainPageDeals": [
+      {
+        "id": "bali",
+        "discount": 55,
+        "tag": "Early Bird",
+        "title": "Bali Paradise Getaway",
+        "location": "Bali, Indonesia",
+        "duration": 7,
+        "groupSize": 2,
+        "originalPrice": 3599,
+        "discountedPrice": 1619,
+        "savings": 1980,
+        "image": "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=800&q=80",
+        "description": "Luxury resort stay with flights included. Experience tropical paradise with world-class amenities."
+      },
+      {
+        "id": "spain-party",
+        "discount": 45,
+        "tag": "Party Deal",
+        "title": "Spanish Party Gateway",
+        "location": "Barcelona & Madrid, Spain",
+        "duration": 6,
+        "groupSize": 18,
+        "originalPrice": 3299,
+        "discountedPrice": 1814,
+        "savings": 1485,
+        "image": "https://images.unsplash.com/photo-1571984405176-5958bd9ac31d?q=80&w=1332&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "description": "6-day Spanish party extravaganza from Barcelona to Madrid with premium nightlife experiences."
+      },
+      {
+        "id": "caribbean",
+        "discount": 50,
+        "tag": "Cruise Deal",
+        "title": "Caribbean Cruise Adventure",
+        "location": "Multiple Caribbean Islands",
+        "duration": 10,
+        "groupSize": 2,
+        "originalPrice": 1999,
+        "discountedPrice": 999,
+        "savings": 1000,
+        "image": "https://plus.unsplash.com/premium_photo-1697730545957-fbfe258301a0?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "description": "Luxury cruise through Bahamas, Jamaica & Grand Cayman with all-inclusive amenities."
+      }
+    ]
+  }
+}
